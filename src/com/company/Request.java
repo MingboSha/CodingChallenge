@@ -27,36 +27,49 @@ public class Request {
     }
 
     public void parseLine() {
-        this.requestBody = "\""+this.requestLine.split("\"")[1]+"\"";
-        //System.out.println("Line: "+this.requestLine);
+        String[] splitLine = this.requestLine.split(" ");
+        this.host = splitLine[0];
+        String dateString = splitLine[3]+" "+splitLine[4];
+        //System.out.println(dateString);
+        this.dateTime = dateString.substring(1, dateString.length() - 1);
+        //System.out.println(dateTime);
+        String byteString = splitLine[splitLine.length - 1];
+        this.bytes = byteString.contains("-") ? -1 : Integer.parseInt(byteString);
+        String statusString = splitLine[splitLine.length - 2];
+        this.statusCode = Integer.parseInt(statusString);
+        this.requestBody = this.requestLine.replace(host+" - - "+dateString+" ", "")
+                .replace(" "+statusString+" "+byteString, "");
         if (this.requestBody.split(" ").length > 1) {
             //System.out.println(this.requestBody.split(" ").length);
             this.resource = this.requestBody.split(" ")[1];
         } else {
             this.resource = null;
         }
-        //System.out.println("Resource: "+this.resource);
-        //System.out.println("RequestBody: "+this.requestBody);
-        String requestLineWithoutBody = this.requestLine.replace(" "+requestBody,"");
-        //System.out.println("RequestLineWithoutBody: "+requestLineWithoutBody);
-        String pattern = " []";
-        StringTokenizer tokenizer = new StringTokenizer(requestLineWithoutBody,pattern);
+//        this.requestBody = "\""+this.requestLine.split("\"")[1]+"\"";
+//        //System.out.println("Line: "+this.requestLine);
 
-
-        if(tokenizer.countTokens()==7){
-            host = tokenizer.nextToken();
-            tokenizer.nextToken();
-            tokenizer.nextToken();
-            dateTime = tokenizer.nextToken();
-            dateTime += " " + tokenizer.nextToken();
-            //this.timeStamp = parseTime(dateTime);
-            statusCode = Integer.parseInt(tokenizer.nextToken());
-            String byte_size = tokenizer.nextToken();
-            if(!byte_size.contains("-"))
-                bytes = Integer.parseInt(byte_size);
-            else
-                bytes = -1;
-        }
+//        //System.out.println("Resource: "+this.resource);
+//        //System.out.println("RequestBody: "+this.requestBody);
+//        String requestLineWithoutBody = this.requestLine.replace(" "+requestBody,"");
+//        //System.out.println("RequestLineWithoutBody: "+requestLineWithoutBody);
+//        String pattern = " []";
+//        StringTokenizer tokenizer = new StringTokenizer(requestLineWithoutBody,pattern);
+//
+//
+//        if(tokenizer.countTokens()==7){
+//            host = tokenizer.nextToken();
+//            tokenizer.nextToken();
+//            tokenizer.nextToken();
+//            dateTime = tokenizer.nextToken();
+//            dateTime += " " + tokenizer.nextToken();
+//            //this.timeStamp = parseTime(dateTime);
+//            statusCode = Integer.parseInt(tokenizer.nextToken());
+//            String byte_size = tokenizer.nextToken();
+//            if(!byte_size.contains("-"))
+//                bytes = Integer.parseInt(byte_size);
+//            else
+//                bytes = -1;
+//        }
 
     }
 

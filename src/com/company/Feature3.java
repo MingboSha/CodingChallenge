@@ -92,6 +92,7 @@ public class Feature3 {
         }
         while (parseTime(timeList.get(p2)) < p2Time) {
             p2++;
+            //System.out.println("p2: "+p2+"/"+(timeList.size()-1));
         }
         return p2;
     }
@@ -129,7 +130,7 @@ public class Feature3 {
     private int compareDateTime (String dt1, String dt2) {
         if (windowSumMap.get(dt1) > windowSumMap.get(dt2)) {
             return 1;
-        } else if (windowSumMap.get(dt1) == windowSumMap.get(dt2)) {
+        } else if (windowSumMap.get(dt1).equals(windowSumMap.get(dt2))) {
             if (dt1.compareTo(dt2) > 0) {
                 return -1;
             } else if (dt1.compareTo(dt2) == 0) {

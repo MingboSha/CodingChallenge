@@ -14,12 +14,12 @@ public class Main {
     static ArrayList<String> timeList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        ReadFile("./log_input/log1000.txt");
+        ReadFile("./log_input/log.txt");
         Feature1 f1 = new Feature1(hostMap);
         Feature2 f2 = new Feature2(resourceMap);
         Feature3 f3 = new Feature3(timeSumMap, timeList);
-        //f1.feature1();
-        //f2.feature2();
+        f1.feature1();
+        f2.feature2();
         f3.feature3();
     }
 
@@ -36,7 +36,7 @@ public class Main {
                 //result.put(index, req);
                 String host = req.getHost();
                 if (host == null) {
-                    System.out.println("Null line: "+line);
+                    System.out.println("Null line at "+index+": "+line);
                     host = "null";
                 }
                 if (!hostMap.containsKey(host)) {
@@ -48,7 +48,7 @@ public class Main {
                 int bytes = req.getBytes();
                 if (bytes != -1 && resource != null) {
                     if (!resourceMap.containsKey(resource)) {
-                        resourceMap.put(resource, new Long(bytes));
+                        resourceMap.put(resource, (long) bytes);
                     } else {
                         resourceMap.put(resource, resourceMap.get(resource) + bytes);
                     }
@@ -60,7 +60,7 @@ public class Main {
                 }
                 timeSumMap.put(dateTime, requestCount);
                 index++;
-                System.out.println("Progress: "+index*100/4400644+"%");
+                //System.out.println("Progress: "+index*100/4400644+"%");
             }
             System.out.println("# of lines: "+index);
 

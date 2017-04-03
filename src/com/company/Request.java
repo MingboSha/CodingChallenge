@@ -17,7 +17,7 @@ public class Request {
     //long timeStamp;
     String requestBody;
     String resource;
-    int statusCode;
+    String statusCode;
     int bytes;
 
     public Request(long id, String requestLine) {
@@ -35,10 +35,9 @@ public class Request {
         //System.out.println(dateTime);
         String byteString = splitLine[splitLine.length - 1];
         this.bytes = byteString.contains("-") ? -1 : Integer.parseInt(byteString);
-        String statusString = splitLine[splitLine.length - 2];
-        this.statusCode = Integer.parseInt(statusString);
+        this.statusCode = splitLine[splitLine.length - 2];
         this.requestBody = this.requestLine.replace(host+" - - "+dateString+" ", "")
-                .replace(" "+statusString+" "+byteString, "");
+                .replace(" "+this.statusCode+" "+byteString, "");
         if (this.requestBody.split(" ").length > 1) {
             //System.out.println(this.requestBody.split(" ").length);
             this.resource = this.requestBody.split(" ")[1];
@@ -107,7 +106,7 @@ public class Request {
         return resource;
     }
 
-    public int getStatusCode() {
+    public String getStatusCode() {
         return statusCode;
     }
 

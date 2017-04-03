@@ -11,32 +11,7 @@ import java.util.HashMap;
  */
 public class Feature4 {
 
-    class FailureTrack {
-        int recentFailConut;
-        long firstFailTime;
-
-        public int getRecentFailConut() {
-            return recentFailConut;
-        }
-
-        public void setRecentFailConut(int recentFailConut) {
-            this.recentFailConut = recentFailConut;
-        }
-
-        public long getFirstFailTime() {
-            return firstFailTime;
-        }
-
-        public void setFirstFailTime(long firstFailTime) {
-            this.firstFailTime = firstFailTime;
-        }
-    }
-
-    class BlockTrack {
-
-    }
-
-    HashMap<String, FailureTrack> failureMap;
+    HashMap<String, ArrayList<Long>> failureMap;
     HashMap<String, Long> blockMap;
     ArrayList<String> resultList;
     public Feature4() {
@@ -47,17 +22,25 @@ public class Feature4 {
     public void scan(Request request) {
         String statusCode = request.getStatusCode();
         String host = request.getHost();
+        Long secondTime = parseTime(request.getDateTime());
         if (statusCode.charAt(0) == 4 || statusCode.charAt(0) == 5) {
             if (!failureMap.containsKey(host)) {
-                FailureTrack failure = new FailureTrack();
-                failure.setFirstFailTime(parseTime(request.getDateTime()));
-                failure.setRecentFailConut(1);
-                failureMap.put(host, failure);
+                ArrayList<Long> failList = new ArrayList<>();
+                failList.add(secondTime);
+                failureMap.put(host, failList);
             } else {
-                int recentFailCount = failureMap.get(host).getRecentFailConut();
-                if (recentFailCount < 2) {
-                    failureMap.get(host).setRecentFailConut();
+                ArrayList<Long> failList = failureMap.get(host);
+                while (failList.size() > 0 && failList.get(0) + 20 < secondTime) {
+                    failList.remove(0);
                 }
+                failList.add(secondTime);
+                if (failList.size() >= 3) {
+                    blockMap.put(host, secondTime);
+                }
+            }
+        } else {
+            if (failureMap.containsKey(host)) {
+                failureMap.remove(host);
             }
         }
 

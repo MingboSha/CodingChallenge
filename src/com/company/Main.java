@@ -12,15 +12,18 @@ public class Main {
     static HashMap<String, Long> resourceMap = new HashMap<>();
     static HashMap<String, Long> timeSumMap = new HashMap<>();
     static ArrayList<String> timeList = new ArrayList<>();
+    static Feature4 f4;
 
     public static void main(String[] args) throws IOException {
-        ReadFile("./log_input/log.txt");
+        f4 = new Feature4();
+        ReadFile("./log_input/log_test.txt");
         Feature1 f1 = new Feature1(hostMap);
         Feature2 f2 = new Feature2(resourceMap);
         Feature3 f3 = new Feature3(timeSumMap, timeList);
         f1.feature1();
         f2.feature2();
         f3.feature3();
+        f4.generateResult();
     }
 
     public static void ReadFile(String fileName) {
@@ -34,6 +37,7 @@ public class Main {
                 //System.out.println(line);
                 Request req = new Request(index, line);
                 //result.put(index, req);
+                f4.scan(req);
                 String host = req.getHost();
                 if (host == null) {
                     System.out.println("Null line at "+index+": "+line);

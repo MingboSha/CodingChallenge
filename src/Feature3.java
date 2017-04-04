@@ -15,12 +15,21 @@ public class Feature3 {
     private long startTime;
     private long endTime;
 
-    public Feature3(HashMap<String, Long> timeSumMap, ArrayList<String> timeList) {
-        this.timeSumMap = timeSumMap;
-        this.timeList = timeList;
+    public Feature3() {
+        this.timeSumMap = new HashMap<>();
+        this.timeList = new ArrayList<>();
     }
 
-    public void feature3(String outputPath3) throws IOException {
+    public void scan(Request req) {
+        String dateTime = req.getDateTime();
+        long requestCount = req.getIndex() + 1;
+        if (!timeSumMap.containsKey(dateTime)) {
+            timeList.add(dateTime);
+        }
+        timeSumMap.put(dateTime, requestCount);
+    }
+
+    public void generateResult(String outputPath3) throws IOException {
         int p1 = 0;
         int p2 = 0;
         this.startTime = parseTime(timeList.get(0));

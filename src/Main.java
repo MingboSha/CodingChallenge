@@ -1,19 +1,14 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Main {
 
-    private static HashMap<String, Integer> hostMap;
-    private static HashMap<String, Long> resourceMap;
-    private static HashMap<String, Long> timeSumMap;
-    private static ArrayList<String> timeList;
     private static Feature1 f1;
     private static Feature2 f2;
     private static Feature3 f3;
     private static Feature4 f4;
+    private static Feature5 f5;
 
     public static void main(String[] args) throws IOException {
         String inputPath;
@@ -22,32 +17,30 @@ public class Main {
         String outputPath3;
         String outputPath4;
 
-        if (args.length > 4) {
+        if (args.length == 5) {
             inputPath = args[0];
             outputPath1 = args[1];
             outputPath2 = args[2];
             outputPath3 = args[3];
             outputPath4 = args[4];
         } else {
-            throw new IllegalArgumentException("No specified input and output files");
+            throw new IllegalArgumentException("No enough input arguments");
         }
+        f1 = new Feature1();
+        f2 = new Feature2();
+        f3 = new Feature3();
         f4 = new Feature4();
+        f5 = new Feature5();
+
         ReadFile(inputPath);
-        f1 = new Feature1(hostMap);
-        f2 = new Feature2(resourceMap);
-        f3 = new Feature3(timeSumMap, timeList);
-        f1.feature1(outputPath1);
-        f2.feature2(outputPath2);
-        f3.feature3(outputPath3);
+        f1.generateResult(outputPath1);
+        f2.generateResult(outputPath2);
+        f3.generateResult(outputPath3);
         f4.generateResult(outputPath4);
+        f5.generateResult("./log_output/weekdays.txt");
     }
 
-    public static void ReadFile(String fileName) {
-
-        hostMap = new HashMap<>();
-        resourceMap = new HashMap<>();
-        timeSumMap = new HashMap<>();
-        timeList = new ArrayList<>();
+    private static void ReadFile(String fileName) {
 
         BufferedReader br;
         long index = 0;
@@ -58,32 +51,12 @@ public class Main {
                 //System.out.println(line);
                 Request req = new Request(index, line);
                 //result.put(index, req);
+                f1.scan(req);
+                f2.scan(req);
+                f3.scan(req);
                 f4.scan(req);
-                String host = req.getHost();
-                if (host == null) {
-                    System.out.println("Null line at "+index+": "+line);
-                    host = "null";
-                }
-                if (!hostMap.containsKey(host)) {
-                    hostMap.put(host, 1);
-                } else {
-                    hostMap.put(host, hostMap.get(host)+1);
-                }
-                String resource = req.getResource();
-                int bytes = req.getBytes();
-                if (bytes != -1 && resource != null) {
-                    if (!resourceMap.containsKey(resource)) {
-                        resourceMap.put(resource, (long) bytes);
-                    } else {
-                        resourceMap.put(resource, resourceMap.get(resource) + bytes);
-                    }
-                }
-                String dateTime = req.getDateTime();
-                long requestCount = index + 1;
-                if (!timeSumMap.containsKey(dateTime)) {
-                    timeList.add(dateTime);
-                }
-                timeSumMap.put(dateTime, requestCount);
+                f5.scan(req);
+
                 index++;
                 //System.out.println("Progress: "+index*100/4400644+"%");
             }

@@ -12,11 +12,24 @@ import java.util.PriorityQueue;
 
 public class Feature2 {
     private HashMap<String, Long> resourceMap;
-    public Feature2(HashMap<String, Long> resourceMap) {
-        this.resourceMap = resourceMap;
+    public Feature2() {
+
+        this.resourceMap = new HashMap<>();
     }
 
-    public void feature2 (String outputPath2) throws IOException {
+    public void scan(Request req) {
+        String resource = req.getResource();
+        int bytes = req.getBytes();
+        if (bytes != -1 && resource != null) {
+            if (!resourceMap.containsKey(resource)) {
+                resourceMap.put(resource, (long) bytes);
+            } else {
+                resourceMap.put(resource, resourceMap.get(resource) + bytes);
+            }
+        }
+    }
+
+    public void generateResult (String outputPath2) throws IOException {
         PriorityQueue<String> resourceQueue = new PriorityQueue<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {

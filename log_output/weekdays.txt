@@ -1,0 +1,7 @@
+Sunday: 9%
+Monday: 15%
+Tuesday: 14%
+Wednesday: 16%
+Thursday: 19%
+Friday: 13%
+Saturday: 9%

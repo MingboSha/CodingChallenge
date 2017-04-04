@@ -8,18 +8,18 @@ import java.util.StringTokenizer;
  * Created by minbosha on 01/04/2017.
  */
 public class Request {
-    long id;
+    private long index;
     String requestLine;
-    String host;
-    String dateTime;
+    private String host;
+    private String dateTime;
     //long timeStamp;
-    String requestBody;
-    String resource;
-    String statusCode;
-    int bytes;
+    private String requestBody;
+    private String resource;
+    private String statusCode;
+    private int bytes;
 
-    public Request(long id, String requestLine) {
-        this.id = id;
+    public Request(long index, String requestLine) {
+        this.index = index;
         this.requestLine = requestLine;
         parseLine();
     }
@@ -42,31 +42,6 @@ public class Request {
         } else {
             this.resource = null;
         }
-//        this.requestBody = "\""+this.requestLine.split("\"")[1]+"\"";
-//        //System.out.println("Line: "+this.requestLine);
-
-//        //System.out.println("Resource: "+this.resource);
-//        //System.out.println("RequestBody: "+this.requestBody);
-//        String requestLineWithoutBody = this.requestLine.replace(" "+requestBody,"");
-//        //System.out.println("RequestLineWithoutBody: "+requestLineWithoutBody);
-//        String pattern = " []";
-//        StringTokenizer tokenizer = new StringTokenizer(requestLineWithoutBody,pattern);
-//
-//
-//        if(tokenizer.countTokens()==7){
-//            host = tokenizer.nextToken();
-//            tokenizer.nextToken();
-//            tokenizer.nextToken();
-//            dateTime = tokenizer.nextToken();
-//            dateTime += " " + tokenizer.nextToken();
-//            //this.timeStamp = parseTime(dateTime);
-//            statusCode = Integer.parseInt(tokenizer.nextToken());
-//            String byte_size = tokenizer.nextToken();
-//            if(!byte_size.contains("-"))
-//                bytes = Integer.parseInt(byte_size);
-//            else
-//                bytes = -1;
-//        }
 
     }
 
@@ -84,8 +59,8 @@ public class Request {
         return timeStamp;
     }
 
-    public long getId() {
-        return id;
+    public long getIndex() {
+        return index;
     }
 
     public String getHost() {

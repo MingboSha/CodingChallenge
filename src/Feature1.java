@@ -11,11 +11,26 @@ import java.util.PriorityQueue;
 public class Feature1 {
     private HashMap<String, Integer> hostMap;
 
-    public Feature1(HashMap<String, Integer> hostMap) {
-        this.hostMap = hostMap;
+    public Feature1() {
+
+        this.hostMap = new HashMap<>();
     }
 
-    public void feature1 (String outputPath1) throws IOException {
+    public void scan(Request req) {
+        String host = req.getHost();
+        if (host == null) {
+            String line = req.requestLine;
+            System.out.println("Null line at: "+line);
+            host = "null";
+        }
+        if (!hostMap.containsKey(host)) {
+            hostMap.put(host, 1);
+        } else {
+            hostMap.put(host, hostMap.get(host)+1);
+        }
+    }
+
+    public void generateResult (String outputPath1) throws IOException {
         PriorityQueue<String> hostQueue = new PriorityQueue<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {

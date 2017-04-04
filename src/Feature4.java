@@ -13,19 +13,28 @@ import java.util.HashMap;
 
 public class Feature4 {
 
-    HashMap<String, ArrayList<Long>> failureMap;
-    HashMap<String, Long> blockMap;
-    ArrayList<String> resultList;
+    private HashMap<String, ArrayList<Long>> failureMap;
+    private HashMap<String, Long> blockMap;
+    private ArrayList<String> resultList;
+
     public Feature4() {
         this.failureMap = new HashMap<>();
         this.blockMap = new HashMap<>();
         this.resultList = new ArrayList<>();
     }
+
+    /**
+     * Scan the request line and put the blocked request in a result list
+     * @param request Request object of the line
+     */
     public void scan(Request request) {
         String statusCode = request.getStatusCode();
-        //System.out.println("statusCode: "+statusCode);
         String host = request.getHost();
         Long secondTime = parseTime(request.getDateTime());
+        /*
+         Tell if the request should be blocked
+         If the request was blocked but already passed the block time, remove from the block list
+         */
         if (blockMap.containsKey(host)) {
             if (blockMap.get(host) + 300 >= secondTime) {
                 resultList.add(request.requestLine+"\n");
@@ -35,11 +44,16 @@ public class Feature4 {
             }
         }
 
+        /*
+         If the request shouldn't be blocked, then tell if it failed or not
+         If it failed, update the it failing status
+         If satisfy the block condition, put it into the block list
+         If success, clear the failing status
+         */
         if (statusCode.charAt(0) == '4' || statusCode.charAt(0) == '5') {
             if (!failureMap.containsKey(host)) {
                 ArrayList<Long> failList = new ArrayList<>();
                 failList.add(secondTime);
-                //System.out.println("failList: "+failList);
                 failureMap.put(host, failList);
             } else {
                 ArrayList<Long> failList = failureMap.get(host);
@@ -47,7 +61,6 @@ public class Feature4 {
                     failList.remove(0);
                 }
                 failList.add(secondTime);
-                //System.out.println("failList: "+failList);
                 if (failList.size() >= 3) {
                     blockMap.put(host, secondTime);
                     failureMap.remove(host);
@@ -63,6 +76,11 @@ public class Feature4 {
 
     }
 
+    /**
+     * Write the output to file
+     * @param outputPath4 The output path for this feature
+     * @throws IOException
+     */
     public void generateResult(String outputPath4) throws IOException {
         File outputFile = new File(outputPath4);
         outputFile.getParentFile().mkdirs();
@@ -75,14 +93,17 @@ public class Feature4 {
         fw.close();
     }
 
+    /**
+     * Parse the date time in String to a time stamp in second
+     * @param dateTime The input date time
+     * @return The time stamp after parse
+     */
     private long parseTime(String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z");
         long timeStamp = 0;
         try {
             Date date = df.parse(dateTime);
-            //System.out.println(date);
             timeStamp = date.getTime()/1000;
-            //System.out.println(timeStamp);
         } catch (ParseException e) {
             e.printStackTrace();
         }

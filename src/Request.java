@@ -1,7 +1,3 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by minbosha on 01/04/2017.
  */
@@ -22,36 +18,23 @@ public class Request {
     }
 
     public void parseLine() {
+        //Split the request line by space and get everything except request body
         String[] splitLine = this.requestLine.split(" ");
         this.host = splitLine[0];
         String dateString = splitLine[3]+" "+splitLine[4];
-        //System.out.println(dateString);
         this.dateTime = dateString.substring(1, dateString.length() - 1);
-        //System.out.println(dateTime);
         String byteString = splitLine[splitLine.length - 1];
         this.bytes = byteString.contains("-") ? -1 : Integer.parseInt(byteString);
         this.statusCode = splitLine[splitLine.length - 2];
+        //Get requestBody by remove everything else
         this.requestBody = this.requestLine.replace(host+" - - "+dateString+" ", "")
                 .replace(" "+this.statusCode+" "+byteString, "");
         if (this.requestBody.split(" ").length > 1) {
-            //System.out.println(this.requestBody.split(" ").length);
             this.resource = this.requestBody.split(" ")[1];
         } else {
             this.resource = null;
         }
 
-    }
-
-    private long parseTime(String dateTime) {
-        SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z");
-        long timeStamp = 0;
-        try {
-            Date date = df.parse(dateTime);
-            timeStamp = date.getTime()/1000;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return timeStamp;
     }
 
     public long getIndex() {

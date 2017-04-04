@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -9,6 +8,7 @@ import java.util.PriorityQueue;
  */
 
 public class Feature1 {
+
     private HashMap<String, Integer> hostMap;
 
     public Feature1() {
@@ -16,6 +16,10 @@ public class Feature1 {
         this.hostMap = new HashMap<>();
     }
 
+    /**
+     * Scan one line of request, and keep the host and frequency information in HashMap
+     * @param req object for a request line
+     */
     public void scan(Request req) {
         String host = req.getHost();
         if (host == null) {
@@ -30,16 +34,16 @@ public class Feature1 {
         }
     }
 
+    /**
+     * Loop over the HashMap and maintain a minHeap with size 10
+     * Write the output in file
+     * @param outputPath1 The output path for this feature
+     * @throws IOException
+     */
     public void generateResult (String outputPath1) throws IOException {
-        PriorityQueue<String> hostQueue = new PriorityQueue<>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return compareHost(o1, o2);
-            }
-        });
+        PriorityQueue<String> hostQueue = new PriorityQueue<>(this::compareHost);
 
         for (String key : hostMap.keySet()) {
-            //System.out.println("key: "+key);
             if (hostQueue.size() == 10) {
                 if (compareHost(key, hostQueue.peek()) > 0) {
                     hostQueue.poll();
@@ -54,7 +58,7 @@ public class Feature1 {
 
         while (!hostQueue.isEmpty()) {
             String host = hostQueue.poll();
-            System.out.println("Host: "+host+", Feq: "+hostMap.get(host));
+            //System.out.println("Host: "+host+", Feq: "+hostMap.get(host));
             String resultLine = host+","+hostMap.get(host)+"\n";
             resultList.add(resultLine);
         }
@@ -70,7 +74,13 @@ public class Feature1 {
 
     }
 
-
+    /**
+     * A comparator function to used by minHeap, the host with lower frequency has higher priority
+     * If two host have same frequency than compare the lexicographical order
+     * @param host1 the first host
+     * @param host2 the second host
+     * @return priority
+     */
     private int compareHost (String host1, String host2) {
         if (hostMap.get(host1) > hostMap.get(host2)) {
             return 1;

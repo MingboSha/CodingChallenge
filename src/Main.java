@@ -51,9 +51,8 @@ public class Main {
             br = new BufferedReader(new FileReader(fileName));
             String line;
             while ((line = br.readLine()) != null) {
-                //System.out.println(line);
+                //Parse the request line to a Request object
                 Request req = new Request(index, line);
-                //result.put(index, req);
                 f1.scan(req);
                 f2.scan(req);
                 f3.scan(req);

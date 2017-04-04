@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
@@ -11,12 +10,18 @@ import java.util.PriorityQueue;
  */
 
 public class Feature2 {
+
     private HashMap<String, Long> resourceMap;
+
     public Feature2() {
 
         this.resourceMap = new HashMap<>();
     }
 
+    /**
+     * Scan one line of request, and keep the resource name and bytes information in HashMap
+     * @param req object for a request line
+     */
     public void scan(Request req) {
         String resource = req.getResource();
         int bytes = req.getBytes();
@@ -29,16 +34,16 @@ public class Feature2 {
         }
     }
 
+    /**
+     * Loop over the HashMap and maintain a minHeap with size 10
+     * Write the output in file
+     * @param outputPath2 The output path for this feature
+     * @throws IOException
+     */
     public void generateResult (String outputPath2) throws IOException {
-        PriorityQueue<String> resourceQueue = new PriorityQueue<>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return compareHost(o1, o2);
-            }
-        });
+        PriorityQueue<String> resourceQueue = new PriorityQueue<>(this::compareHost);
 
         for (String key : resourceMap.keySet()) {
-            //System.out.println("resource: "+key);
             if (resourceQueue.size() == 10) {
                 if (compareHost(key, resourceQueue.peek()) > 0) {
                     resourceQueue.poll();
@@ -69,7 +74,13 @@ public class Feature2 {
 
     }
 
-
+    /**
+     * A comparator function to used by minHeap, the resource with less bytes has higher priority
+     * If two resources have same bytes than compare the lexicographical order
+     * @param resource1 the first resource
+     * @param resource2 the second resource
+     * @return priority
+     */
     private int compareHost (String resource1, String resource2) {
         if (resourceMap.get(resource1) > resourceMap.get(resource2)) {
             return 1;

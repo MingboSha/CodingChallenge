@@ -8,18 +8,23 @@ import java.util.*;
 /**
  * Created by minbosha on 01/04/2017.
  */
-public class Feature3 {
-    private HashMap<String, Long> timeSumMap;
-    private ArrayList<String> timeList;
-    private HashMap<String, Long> windowSumMap = new HashMap<>();
-    private long startTime;
-    private long endTime;
 
-    public Feature3() {
-        this.timeSumMap = new HashMap<>();
-        this.timeList = new ArrayList<>();
+public class Feature3 {
+
+    private HashMap <String, Long> timeSumMap;
+    private ArrayList <String> timeList;
+    private HashMap <String, Long> windowSumMap = new HashMap <> ( );
+
+    public Feature3 ( ) {
+        this.timeSumMap = new HashMap <> ( );
+        this.timeList = new ArrayList <> ( );
     }
 
+    /**
+     * Scan one line of request, and keep the time stamp and cumulative sum in HashMap
+     * and also keep all the time stamps with request in ArrayList as index for the HashMap
+     * @param req object for a request line
+     */
     public void scan(Request req) {
         String dateTime = req.getDateTime();
         long requestCount = req.getIndex() + 1;
@@ -29,20 +34,20 @@ public class Feature3 {
         timeSumMap.put(dateTime, requestCount);
     }
 
+    /**
+     * Move the window from beginning to the end, move the two pointers with the window and in the mean time put the
+     * window sums in a minHeap with size 10.
+     * Write the output to file
+     * @param outputPath3 The output path for this feature
+     * @throws IOException
+     */
     public void generateResult(String outputPath3) throws IOException {
         int p1 = 0;
         int p2 = 0;
-        this.startTime = parseTime(timeList.get(0));
-        //System.out.println("StartTime: "+startTime);
-        this.endTime = parseTime(timeList.get(timeList.size() - 1));
-        //System.out.println("EndTime: "+endTime);
+        long startTime = parseTime(timeList.get(0));
+        long endTime = parseTime(timeList.get(timeList.size() - 1));
 
-        PriorityQueue<String> pq = new PriorityQueue<>(new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                return compareDateTime(o1, o2);
-            }
-        });
+        PriorityQueue<String> pq = new PriorityQueue<>(this::compareDateTime);
 
         for (long pTime = startTime; pTime <= endTime; pTime++) {
             p1 = moveP1(pTime, p1);
@@ -50,7 +55,6 @@ public class Feature3 {
             long windowSum = windowSum(p1, p2);
             String dateTime = revertTime(pTime);
             windowSumMap.put(dateTime, windowSum);
-            //System.out.println("Put in pq: "+dateTime+"  "+windowSum);
             if (pq.size() == 10) {
                 if (compareDateTime(dateTime, pq.peek()) > 0) {
                     pq.poll();
@@ -85,6 +89,12 @@ public class Feature3 {
     // 2  2  1  3  0  1  2  3  1
     // 2  4  5  8  8  9  11 14 15
 
+    /**
+     * Based on the current window location, move pointer 1
+     * @param pTime Start time for current window
+     * @param p1 Current pointer 1 location
+     * @return p1 location after move
+     */
     private int moveP1(long pTime, int p1) {
         while (parseTime(timeList.get(p1)) < pTime) {
             p1++;
@@ -92,6 +102,12 @@ public class Feature3 {
         return p1;
     }
 
+    /**
+     * Based on the current window location, move pointer 2
+     * @param pTime Start time for current window
+     * @param p2 Current pointer 2 location
+     * @return p2 location after move
+     */
     private int moveP2(long pTime, int p2) {
         long p2Time = pTime + 3659;
         if (p2Time >= parseTime(timeList.get(timeList.size() - 1))) {
@@ -99,13 +115,18 @@ public class Feature3 {
         }
         while (parseTime(timeList.get(p2)) < p2Time) {
             p2++;
-            //System.out.println("p2: "+p2+"/"+(timeList.size()-1));
         }
         return p2;
     }
 
+    /**
+     * Based on the location of two pointers, calculate the sum in the window by subtraction
+     * @param p1 Location of pointer 1
+     * @param p2 Location of pointer 2
+     * @return Sum in the window
+     */
     private long windowSum(int p1, int p2) {
-        long windowSum = 0;
+        long windowSum;
         if (p1 > 0) {
             windowSum = timeSumMap.get(timeList.get(p2)) - timeSumMap.get(timeList.get(p1 - 1));
         } else {
@@ -114,26 +135,41 @@ public class Feature3 {
         return windowSum;
     }
 
+    /**
+     * Parse the date time in String to a time stamp in second
+     * @param dateTime The input date time
+     * @return The time stamp after parse
+     */
     private long parseTime(String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z");
         long timeStamp = 0;
         try {
             Date date = df.parse(dateTime);
-            //System.out.println(date);
             timeStamp = date.getTime()/1000;
-            //System.out.println(timeStamp);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return timeStamp;
     }
 
+    /**
+     * Revert the second time stamp back to date time in String
+     * @param secondTime The input second time
+     * @return The date time after revert
+     */
     private String revertTime(long secondTime) {
         SimpleDateFormat df = new SimpleDateFormat("dd/MMM/yyyy:HH:mm:ss Z");
         Date date = new Date(secondTime*1000);
         return df.format(date);
     }
 
+    /**
+     * A comparator function to used by minHeap, the window with less sum has higher priority
+     * If two window have same sum than compare the lexicographical order
+     * @param dt1 The start location for the first window
+     * @param dt2 The start location for the second window
+     * @return The priority
+     */
     private int compareDateTime (String dt1, String dt2) {
         if (windowSumMap.get(dt1) > windowSumMap.get(dt2)) {
             return 1;

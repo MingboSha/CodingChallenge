@@ -3,7 +3,7 @@
 #### The original problem can be found [here](https://github.com/InsightDataScience/fansite-analytics-challenge).
 
 ### Introduction of running:
-To run the program, just execute the run.sh file, if it shows "permission denied", execute this line before you run the .sh file.
+To run the program, just execute the run.sh file by ```./run.sh```, if it shows "permission denied", execute this line before you run the .sh file.
 ~~~~
 chmod a+x ./run.sh
 ~~~~

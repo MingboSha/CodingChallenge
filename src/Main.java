@@ -9,6 +9,7 @@ public class Main {
     private static Feature3 f3;
     private static Feature4 f4;
     private static Feature5 f5;
+    private static Feature6 f6;
 
     public static void main(String[] args) throws IOException {
         String inputPath;
@@ -31,6 +32,7 @@ public class Main {
         f3 = new Feature3();
         f4 = new Feature4();
         f5 = new Feature5();
+        f6 = new Feature6();
 
         ReadFile(inputPath);
         f1.generateResult(outputPath1);
@@ -38,6 +40,7 @@ public class Main {
         f3.generateResult(outputPath3);
         f4.generateResult(outputPath4);
         f5.generateResult("./log_output/weekdays.txt");
+        f6.generateResult("./log_output/dayHours.txt");
     }
 
     private static void ReadFile(String fileName) {
@@ -56,6 +59,7 @@ public class Main {
                 f3.scan(req);
                 f4.scan(req);
                 f5.scan(req);
+                f6.scan(req);
 
                 index++;
                 //System.out.println("Progress: "+index*100/4400644+"%");

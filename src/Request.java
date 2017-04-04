@@ -1,8 +1,6 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.SimpleTimeZone;
-import java.util.StringTokenizer;
 
 /**
  * Created by minbosha on 01/04/2017.
@@ -12,7 +10,6 @@ public class Request {
     String requestLine;
     private String host;
     private String dateTime;
-    //long timeStamp;
     private String requestBody;
     private String resource;
     private String statusCode;
@@ -50,9 +47,7 @@ public class Request {
         long timeStamp = 0;
         try {
             Date date = df.parse(dateTime);
-            //System.out.println(date);
             timeStamp = date.getTime()/1000;
-            //System.out.println(timeStamp);
         } catch (ParseException e) {
             e.printStackTrace();
         }

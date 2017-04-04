@@ -35,6 +35,7 @@ chmod a+x ./run.sh
 
 
 * I also added an additional feature, Feature 6, which can produce a report of the percentage of requests for each hour of a day. The result for the 400+MB input is:
+
   00:00 - 01:00 3%
 
   01:00 - 02:00 2%

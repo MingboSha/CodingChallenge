@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,12 +11,12 @@ import java.util.PriorityQueue;
  */
 
 public class Feature2 {
-    HashMap<String, Long> resourceMap;
+    private HashMap<String, Long> resourceMap;
     public Feature2(HashMap<String, Long> resourceMap) {
         this.resourceMap = resourceMap;
     }
 
-    public void feature2 () throws IOException {
+    public void feature2 (String outputPath2) throws IOException {
         PriorityQueue<String> resourceQueue = new PriorityQueue<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -47,7 +45,7 @@ public class Feature2 {
             resultList.add(resultLine);
         }
 
-        File outputFile = new File("./log_output/resources.txt");
+        File outputFile = new File(outputPath2);
         outputFile.getParentFile().mkdirs();
         FileWriter fw = new FileWriter(outputFile);
 
@@ -62,7 +60,7 @@ public class Feature2 {
     private int compareHost (String resource1, String resource2) {
         if (resourceMap.get(resource1) > resourceMap.get(resource2)) {
             return 1;
-        } else if (resourceMap.get(resource1) == resourceMap.get(resource2)) {
+        } else if (resourceMap.get(resource1).equals(resourceMap.get(resource2))) {
             if (resource1.compareTo(resource2) > 0) {
                 return -1;
             } else if (resource1.compareTo(resource2) == 0) {

@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +10,7 @@ import java.util.HashMap;
 /**
  * Created by minbosha on 01/04/2017.
  */
+
 public class Feature4 {
 
     HashMap<String, ArrayList<Long>> failureMap;
@@ -28,7 +27,7 @@ public class Feature4 {
         String host = request.getHost();
         Long secondTime = parseTime(request.getDateTime());
         if (blockMap.containsKey(host)) {
-            if (blockMap.get(host) + 299 > secondTime) {
+            if (blockMap.get(host) + 300 >= secondTime) {
                 resultList.add(request.requestLine+"\n");
                 return;
             } else {
@@ -44,7 +43,7 @@ public class Feature4 {
                 failureMap.put(host, failList);
             } else {
                 ArrayList<Long> failList = failureMap.get(host);
-                while (failList.size() > 0 && failList.get(0) + 20 < secondTime) {
+                while (failList.size() > 0 && failList.get(0) + 19 < secondTime) {
                     failList.remove(0);
                 }
                 failList.add(secondTime);
@@ -64,14 +63,14 @@ public class Feature4 {
 
     }
 
-    public void generateResult() throws IOException {
-        File outputFile = new File("./log_output/blocked.txt");
+    public void generateResult(String outputPath4) throws IOException {
+        File outputFile = new File(outputPath4);
         outputFile.getParentFile().mkdirs();
         FileWriter fw = new FileWriter(outputFile);
 
-        for (int i = 0; i < resultList.size(); i++) {
-            fw.write(resultList.get(i));
-            System.out.print("Blocked: "+resultList.get(i));
+        for (String result : resultList) {
+            fw.write(result);
+            System.out.print("Blocked: " + result);
         }
         fw.close();
     }

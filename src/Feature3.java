@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,18 +9,18 @@ import java.util.*;
  * Created by minbosha on 01/04/2017.
  */
 public class Feature3 {
-    HashMap<String, Long> timeSumMap;
-    ArrayList<String> timeList;
-    HashMap<String, Long> windowSumMap = new HashMap<>();
-    long startTime;
-    long endTime;
+    private HashMap<String, Long> timeSumMap;
+    private ArrayList<String> timeList;
+    private HashMap<String, Long> windowSumMap = new HashMap<>();
+    private long startTime;
+    private long endTime;
 
     public Feature3(HashMap<String, Long> timeSumMap, ArrayList<String> timeList) {
         this.timeSumMap = timeSumMap;
         this.timeList = timeList;
     }
 
-    public void feature3() throws IOException {
+    public void feature3(String outputPath3) throws IOException {
         int p1 = 0;
         int p2 = 0;
         this.startTime = parseTime(timeList.get(0));
@@ -63,7 +61,7 @@ public class Feature3 {
             resultList.add(resultLine);
         }
 
-        File outputFile = new File("./log_output/hours.txt");
+        File outputFile = new File(outputPath3);
         outputFile.getParentFile().mkdirs();
         FileWriter fw = new FileWriter(outputFile);
 

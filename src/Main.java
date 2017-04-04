@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,26 +6,49 @@ import java.util.HashMap;
 
 public class Main {
 
-    static HashMap<String, Integer> hostMap = new HashMap<>();
-    static HashMap<String, Long> resourceMap = new HashMap<>();
-    static HashMap<String, Long> timeSumMap = new HashMap<>();
-    static ArrayList<String> timeList = new ArrayList<>();
-    static Feature4 f4;
+    private static HashMap<String, Integer> hostMap;
+    private static HashMap<String, Long> resourceMap;
+    private static HashMap<String, Long> timeSumMap;
+    private static ArrayList<String> timeList;
+    private static Feature1 f1;
+    private static Feature2 f2;
+    private static Feature3 f3;
+    private static Feature4 f4;
 
     public static void main(String[] args) throws IOException {
+        String inputPath;
+        String outputPath1;
+        String outputPath2;
+        String outputPath3;
+        String outputPath4;
+
+        if (args.length > 4) {
+            inputPath = args[0];
+            outputPath1 = args[1];
+            outputPath2 = args[2];
+            outputPath3 = args[3];
+            outputPath4 = args[4];
+        } else {
+            throw new IllegalArgumentException("No specified input and output files");
+        }
         f4 = new Feature4();
-        ReadFile("./log_input/log_test.txt");
-        Feature1 f1 = new Feature1(hostMap);
-        Feature2 f2 = new Feature2(resourceMap);
-        Feature3 f3 = new Feature3(timeSumMap, timeList);
-        f1.feature1();
-        f2.feature2();
-        f3.feature3();
-        f4.generateResult();
+        ReadFile(inputPath);
+        f1 = new Feature1(hostMap);
+        f2 = new Feature2(resourceMap);
+        f3 = new Feature3(timeSumMap, timeList);
+        f1.feature1(outputPath1);
+        f2.feature2(outputPath2);
+        f3.feature3(outputPath3);
+        f4.generateResult(outputPath4);
     }
 
     public static void ReadFile(String fileName) {
-        //HashMap<Long, Request> result = new HashMap<>();
+
+        hostMap = new HashMap<>();
+        resourceMap = new HashMap<>();
+        timeSumMap = new HashMap<>();
+        timeList = new ArrayList<>();
+
         BufferedReader br;
         long index = 0;
         try {
@@ -72,7 +93,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //return result;
 
     }
 }

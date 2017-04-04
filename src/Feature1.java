@@ -1,5 +1,3 @@
-package com.company;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,12 +9,13 @@ import java.util.PriorityQueue;
  */
 
 public class Feature1 {
-    HashMap<String, Integer> hostMap;
+    private HashMap<String, Integer> hostMap;
+
     public Feature1(HashMap<String, Integer> hostMap) {
         this.hostMap = hostMap;
     }
 
-    public void feature1 () throws IOException {
+    public void feature1 (String outputPath1) throws IOException {
         PriorityQueue<String> hostQueue = new PriorityQueue<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
@@ -45,7 +44,7 @@ public class Feature1 {
             resultList.add(resultLine);
         }
 
-        File outputFile = new File("./log_output/hosts.txt");
+        File outputFile = new File(outputPath1);
         outputFile.getParentFile().mkdirs();
         FileWriter fw = new FileWriter(outputFile);
 
@@ -60,7 +59,7 @@ public class Feature1 {
     private int compareHost (String host1, String host2) {
         if (hostMap.get(host1) > hostMap.get(host2)) {
             return 1;
-        } else if (hostMap.get(host1) == hostMap.get(host2)) {
+        } else if (hostMap.get(host1).equals(hostMap.get(host2))) {
             if (host1.compareTo(host2) > 0) {
                 return -1;
             } else if (host1.compareTo(host2) == 0) {

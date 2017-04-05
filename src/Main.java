@@ -63,7 +63,7 @@ public class Main {
                 index++;
                 //System.out.println("Progress: "+index*100/4400644+"%");
             }
-            System.out.println("# of lines: "+index);
+            //System.out.println("# of lines: "+index);
 
             br.close();
         } catch (IOException e) {

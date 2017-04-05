@@ -38,10 +38,10 @@ public class Feature6 {
             if (dayHourMap.containsKey(hour)) {
                 int percent = (int) (dayHourMap.get(hour) * 100 / totalIndex);
                 resultList.add(hour + ":00 - "+hour1+":00 " + percent +"%"+ "\n");
-                System.out.println(hour + ":00 - "+hour1+":00 " + percent +"%");
+                //System.out.println(hour + ":00 - "+hour1+":00 " + percent +"%");
             } else {
                 resultList.add(hour + ":00 - "+hour1+":00 " + 0 +"%"+ "\n");
-                System.out.println(hour + ":00 - "+hour1+":00 " + 0 +"%");
+                //System.out.println(hour + ":00 - "+hour1+":00 " + 0 +"%");
             }
         }
         File outputFile = new File(outputPath);

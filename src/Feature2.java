@@ -58,7 +58,7 @@ public class Feature2 {
 
         while (!resourceQueue.isEmpty()) {
             String resource = resourceQueue.poll();
-            System.out.println("Resource: "+resource+", Bytes: "+resourceMap.get(resource));
+            //System.out.println("Resource: "+resource+", Bytes: "+resourceMap.get(resource));
             String resultLine = resource+"\n";
             resultList.add(resultLine);
         }

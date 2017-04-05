@@ -3,9 +3,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by minbosha on 01/04/2017.
@@ -88,7 +86,7 @@ public class Feature4 {
 
         for (String result : resultList) {
             fw.write(result);
-            System.out.print("Blocked: " + result);
+            //System.out.print("Blocked: " + result);
         }
         fw.close();
     }

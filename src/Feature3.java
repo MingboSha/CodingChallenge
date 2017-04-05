@@ -69,7 +69,7 @@ public class Feature3 {
 
         while (!pq.isEmpty()) {
             String dateTime = pq.poll();
-            System.out.println("DateTime: "+dateTime+", Requests: "+windowSumMap.get(dateTime));
+            //System.out.println("DateTime: "+dateTime+", Requests: "+windowSumMap.get(dateTime));
             String resultLine = dateTime+","+windowSumMap.get(dateTime)+"\n";
             resultList.add(resultLine);
         }

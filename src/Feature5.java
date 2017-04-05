@@ -36,7 +36,7 @@ public class Feature5 {
             if (weekdayMap.containsKey(weekdays[i])) {
                 int percent = (int) (weekdayMap.get(weekdays[i]) * 100 / totalIndex);
                 resultList.add(weekdays[i] + ": " + percent +"%"+ "\n");
-                System.out.println(weekdays[i] + ": " + percent+"%");
+                //System.out.println(weekdays[i] + ": " + percent+"%");
             }
         }
         File outputFile = new File(outputPath);

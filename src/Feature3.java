@@ -44,6 +44,7 @@ public class Feature3 {
     public void generateResult(String outputPath3) throws IOException {
         int p1 = 0;
         int p2 = 0;
+        long windowSum = 0;
         long startTime = parseTime(timeList.get(0));
         long endTime = parseTime(timeList.get(timeList.size() - 1));
 
@@ -52,7 +53,7 @@ public class Feature3 {
         for (long pTime = startTime; pTime <= endTime; pTime++) {
             p1 = moveP1(pTime, p1);
             p2 = moveP2(pTime, p2);
-            long windowSum = windowSum(p1, p2);
+            windowSum = windowSum(p1, p2);
             String dateTime = revertTime(pTime);
             windowSumMap.put(dateTime, windowSum);
             if (pq.size() == 10) {
@@ -109,7 +110,7 @@ public class Feature3 {
      * @return p2 location after move
      */
     private int moveP2(long pTime, int p2) {
-        long p2Time = pTime + 3659;
+        long p2Time = pTime + 3599;
         if (p2Time >= parseTime(timeList.get(timeList.size() - 1))) {
             return timeList.size() - 1;
         }

@@ -12,7 +12,7 @@ public class Main {
     private static Feature6 f6;
 
     public static void main(String[] args) throws IOException {
-        Long start = System.currentTimeMillis ();
+//        Long start = System.currentTimeMillis ();
         String inputPath;
         String outputPath1;
         String outputPath2;
@@ -42,8 +42,8 @@ public class Main {
         f4.generateResult(outputPath4);
         f5.generateResult("./log_output/weekdays.txt");
         f6.generateResult("./log_output/dayHours.txt");
-        Long endTime = System.currentTimeMillis ();
-        System.out.println ("Total time: " + (endTime - start));
+//        Long endTime = System.currentTimeMillis ();
+//        System.out.println ("Total time: " + (endTime - start));
     }
 
     private static void ReadFile(String fileName) {
